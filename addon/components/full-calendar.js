@@ -15,15 +15,17 @@ export default Ember.Component.extend({
     this._sendAction('renderEvent', event);
   },
 
-  dayClick: function(date, jsEvent, view) {
-    debugger;
-    this.addEvent(date);
-    console.log(date, jsEvent, view);
+  removeEvent: function(event) {
+    this._sendAction('removeEvents', event.get('_id'));
   },
 
   actions: {
     dayClick: function(date) {
       this.addEvent(date);
+    },
+
+    eventClick: function(event) {
+      this.removeEvent(event);
     },
   },
 
@@ -31,15 +33,14 @@ export default Ember.Component.extend({
     var _this = this;
 
     _this.$().fullCalendar({
-      dayClick: function(date) { return _this.send('dayClick', date) }
-      // eventClick: this.eventClick,
+      dayClick: function(date) { return _this.send('dayClick', date); },
+      eventClick: function(event) { return _this.send('eventClick', event); },
       // eventMouseover: this.eventMouseover,
       // eventMouseout: this.eventMouseout
     });
   }.on('didInsertElement'),
 
   _sendAction: function(action, args) {
-    debugger;
     return this.$().fullCalendar(action, args);
   }
 
